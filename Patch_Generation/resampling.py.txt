@@ -1,0 +1,29 @@
+import os
+import random
+import shutil
+
+# 设置来源文件夹和目标文件夹的路径
+src_folder = "/"
+dst_folder = "/"
+
+# 获取来源文件夹中的所有图片文件，并随机打乱顺序
+img_list = os.listdir(src_folder)
+random.shuffle(img_list)
+
+# 计算每份图片的数量
+num_imgs_per_folder = len(img_list) // 4
+
+# 循环4次，每次复制num_imgs_per_folder个图片到目标文件夹中
+for i in range(4):
+    start_idx = i * num_imgs_per_folder
+    end_idx = (i + 1) * num_imgs_per_folder
+    if i == 3:
+        # 如果是最后一份，取到列表末尾的所有图片
+        end_idx = len(img_list)
+    dst_subfolder = os.path.join(dst_folder, f"subfolder_{i+1}")
+    os.makedirs(dst_subfolder, exist_ok=True)
+    for img_filename in img_list[start_idx:end_idx]:
+        src_img_path = os.path.join(src_folder, img_filename)
+        dst_img_path = os.path.join(dst_subfolder, img_filename)
+        shutil.copy(src_img_path, dst_img_path)
+        print(f"复制{img_filename}到{dst_subfolder}")

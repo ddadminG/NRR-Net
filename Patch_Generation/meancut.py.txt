@@ -1,0 +1,39 @@
+import os
+import math
+from PIL import Image
+
+# coding: utf-8
+
+# In[3]:
+
+path_img = '/'
+img_dir = os.listdir(path_img)
+print(img_dir)
+print(len(img_dir))
+for i in range(len(img_dir)):
+    # 根据图片名称提取id,方便重命名 
+    tmpFileName=(img_dir[i].split('.')[0])
+    print(len(tmpFileName))
+    if(len(tmpFileName)==0):
+        break;
+    print((img_dir[i].split('.')[0]).split('FGADR')[1])
+    id = int(((img_dir[i].split('.')[0]).split('FGADR')[1]))
+    # image_id = int((img_dir[i].split('.')[0]).split('_')[1])
+    img = Image.open(path_img + '/' + img_dir[i])
+    size_img = img.size
+    print(size_img)
+    # 准备将图片切割成4张小图片,这里后面的2是开根号以后的数，比如你想分割为9张，将2改为3即可
+
+    weight = math.ceil(size_img[0] // 4)
+    height = math.ceil(size_img[1] // 4)
+    # if((size_img[0]<100)&(size_img[0]<100)):
+    #      print('image is so small!')
+    #      continue; 
+    image_num = 0;
+    for j in range(2):
+        for k in range(2):
+            box = (weight * k, height * j, weight * (k + 1), height * (j + 1))
+            region = img.crop(box)
+            # 输出路径
+            image_num=image_num+1;
+            region.save('/')
